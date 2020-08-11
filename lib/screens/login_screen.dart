@@ -8,6 +8,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -26,11 +34,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         labelText: 'Email',
                       ),
+                      autofocus: true,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_passwordFocusNode);
+                      },
                     ),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
                       ),
+                      obscureText: true,
+                      textInputAction: TextInputAction.done,
+                      focusNode: _passwordFocusNode,
                     ),
                     SizedBox.fromSize(
                       size: Size(double.infinity, 30),
