@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/components/shared/primary_button.dart';
 import 'package:flutter_todo_app/components/shared/secondary_button.dart';
+import 'package:flutter_todo_app/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -106,7 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SecondaryButton(
                           text: 'Sign up',
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(RegisterScreen.routeName);
+                          },
                         ),
                       ],
                     ),
