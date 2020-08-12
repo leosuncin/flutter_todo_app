@@ -10,6 +10,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _passwordFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+  var email;
+  var password;
+
+  _submit() {
+    if (_form.currentState.validate()) {
+      _form.currentState.save();
+      debugPrint(email);
+      debugPrint(password);
+    }
+  }
 
   @override
   void dispose() {
@@ -49,6 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         return null;
                       },
+                      onSaved: (value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
                     ),
                     TextFormField(
                       decoration: InputDecoration(
@@ -57,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: true,
                       textInputAction: TextInputAction.done,
                       focusNode: _passwordFocusNode,
+                      onFieldSubmitted: (_) => _submit(),
                       validator: (value) {
                         if (value == null || value.isEmpty)
                           return 'Password should not be empty';
@@ -65,6 +81,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           return 'Password too short (at least 8 characters required)';
 
                         return null;
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          password = value;
+                        });
                       },
                     ),
                     SizedBox.fromSize(
@@ -79,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: theme.accentTextTheme.button.color,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: _submit,
                     ),
                     FlatButton(
                       minWidth: double.infinity,
