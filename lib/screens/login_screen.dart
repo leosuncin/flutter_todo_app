@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/components/shared/primary_button.dart';
+import 'package:flutter_todo_app/components/shared/secondary_button.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -29,7 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final mq = MediaQuery.of(context);
 
     return Scaffold(
@@ -99,21 +100,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox.fromSize(
                           size: Size(double.infinity, 30),
                         ),
-                        FlatButton(
-                          minWidth: double.infinity,
-                          color: theme.colorScheme.primary,
-                          child: Text(
-                            'Sign in',
-                            style: TextStyle(
-                              color: theme.accentTextTheme.button.color,
-                            ),
-                          ),
+                        PrimaryButton(
+                          text: 'Sign in',
                           onPressed: _submit,
                         ),
-                        FlatButton(
-                          minWidth: double.infinity,
-                          color: theme.colorScheme.background,
-                          child: Text('Sign up'),
+                        SecondaryButton(
+                          text: 'Sign up',
                           onPressed: () {},
                         ),
                       ],
