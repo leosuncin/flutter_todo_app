@@ -9,6 +9,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _passwordFocusNode = FocusNode();
+  final _form = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -23,11 +24,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Center(
         child: Container(
-          height: 300,
+          height: 320,
           child: Card(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Form(
+                key: _form,
+                autovalidate: true,
                 child: Column(
                   children: [
                     TextFormField(
@@ -40,6 +43,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_passwordFocusNode);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty)
+                          return 'Email should not be empty';
+
+                        return null;
+                      },
                     ),
                     TextFormField(
                       decoration: InputDecoration(
@@ -48,6 +57,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: true,
                       textInputAction: TextInputAction.done,
                       focusNode: _passwordFocusNode,
+                      validator: (value) {
+                        if (value == null || value.isEmpty)
+                          return 'Password should not be empty';
+
+                        if (value.length < 8)
+                          return 'Password too short (at least 8 characters required)';
+
+                        return null;
+                      },
                     ),
                     SizedBox.fromSize(
                       size: Size(double.infinity, 30),
