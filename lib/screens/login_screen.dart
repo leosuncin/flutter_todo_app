@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_todo_app/components/shared/primary_button.dart';
 import 'package:flutter_todo_app/components/shared/secondary_button.dart';
+import 'package:flutter_todo_app/providers/auth.dart';
 import 'package:flutter_todo_app/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,14 +15,32 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _passwordFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+  final _scaffold = GlobalKey<ScaffoldState>();
   var email;
   var password;
+  var _isLoading = false;
 
-  _submit() {
+  _submit() async {
+    if (_isLoading) return;
+
     if (_form.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       _form.currentState.save();
-      debugPrint(email);
-      debugPrint(password);
+      _scaffold.currentState.showSnackBar(SnackBar(
+          content: Row(
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(width: 20),
+          Text('Logging...'),
+        ],
+      )));
+      await context.read<Auth>().login(email, password);
+      _scaffold.currentState.hideCurrentSnackBar();
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -35,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final mq = MediaQuery.of(context);
 
     return Scaffold(
+      key: _scaffold,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
