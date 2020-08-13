@@ -159,6 +159,13 @@ class Auth with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  logout() {
+    _user = null;
+    _token = null;
+    _loggedAt = null;
+    notifyListeners();
+  }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties.add(DiagnosticsProperty<User>('user', user));
