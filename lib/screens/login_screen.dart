@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_todo_app/components/shared/primary_button.dart';
 import 'package:flutter_todo_app/components/shared/secondary_button.dart';
 import 'package:flutter_todo_app/providers/auth.dart';
+import 'package:flutter_todo_app/screens/home_screen.dart';
 import 'package:flutter_todo_app/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         await context.read<Auth>().login(email, password);
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } on LoginException catch (e) {
         showDialog(
           context: context,

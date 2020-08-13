@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo_app/providers/auth.dart';
+import 'package:flutter_todo_app/screens/home_screen.dart';
 import 'package:flutter_todo_app/screens/login_screen.dart';
 import 'package:flutter_todo_app/screens/register_screen.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),
+        HomeScreen.routeName: (_) => HomeScreen(),
       },
     );
   }
