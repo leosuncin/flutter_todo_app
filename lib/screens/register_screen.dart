@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_todo_app/components/shared/primary_button.dart';
 import 'package:flutter_todo_app/components/shared/secondary_button.dart';
+import 'package:flutter_todo_app/providers/auth.dart';
+import 'package:flutter_todo_app/screens/home_screen.dart';
 import 'package:flutter_todo_app/screens/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -14,16 +17,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+  final _screen = GlobalKey<ScaffoldState>();
   var name;
   var email;
   var password;
+  var _isLoading = false;
 
-  _submit() {
+  _submit() async {
+    if (_isLoading) return;
+
     if (_form.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       _form.currentState.save();
-      debugPrint(name);
-      debugPrint(email);
-      debugPrint(password);
+      _screen.currentState.showSnackBar(SnackBar(
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 20),
+            Text('Registering...'),
+          ],
+        ),
+      ));
+
+      try {
+        await context.read<Auth>().register(name, email, password);
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      } on RegisterException catch (e) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Validation error'),
+            content: Text(e.toString()),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('CLOSE'),
+              ),
+            ],
+          ),
+        );
+      } finally {
+        _screen.currentState.hideCurrentSnackBar();
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -39,6 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final mq = MediaQuery.of(context);
 
     return Scaffold(
+      key: _screen,
       body: Center(
         child: SingleChildScrollView(
           child: Container(

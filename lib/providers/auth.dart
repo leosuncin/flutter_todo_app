@@ -92,6 +92,15 @@ class LoginException implements Exception {
   String toString() => _message;
 }
 
+class RegisterException implements Exception {
+  final List<String> _messages;
+
+  RegisterException(this._messages);
+
+  @override
+  String toString() => _messages.join('\n');
+}
+
 class Auth with ChangeNotifier, DiagnosticableTreeMixin {
   User _user;
   String _token;
@@ -122,6 +131,31 @@ class Auth with ChangeNotifier, DiagnosticableTreeMixin {
     } else {
       Map<String, dynamic> data = json.decode(response.body);
       throw new LoginException(data['message']);
+    }
+  }
+
+  Future<void> register(String name, String email, String password) async {
+    final payload = json.encode({
+      'name': name,
+      'email': email,
+      'password': password,
+    });
+    final response = await http.post(
+      'https://nest-auth-example.herokuapp.com/auth/register',
+      body: payload,
+      headers: {
+        'content-type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 201) {
+      _user = User.fromJson(response.body);
+      _loggedAt = DateTime.now();
+      _token = response.headers['authorization'].split(' ').last;
+      notifyListeners();
+    } else {
+      Map<String, dynamic> data = json.decode(response.body);
+      throw new RegisterException(List<String>.from(data['message']));
     }
   }
 
