@@ -83,6 +83,15 @@ class User {
   }
 }
 
+class LoginException implements Exception {
+  final String _message;
+
+  LoginException(this._message);
+
+  @override
+  String toString() => _message;
+}
+
 class Auth with ChangeNotifier, DiagnosticableTreeMixin {
   User _user;
   String _token;
@@ -104,9 +113,16 @@ class Auth with ChangeNotifier, DiagnosticableTreeMixin {
         'content-type': 'application/json; charset=UTF-8',
       },
     );
-    _user = User.fromJson(response.body);
-    _loggedAt = DateTime.now();
-    notifyListeners();
+
+    if (response.statusCode == 200) {
+      _user = User.fromJson(response.body);
+      _loggedAt = DateTime.now();
+      _token = response.headers['authorization'].split(' ').last;
+      notifyListeners();
+    } else {
+      Map<String, dynamic> data = json.decode(response.body);
+      throw new LoginException(data['message']);
+    }
   }
 
   @override

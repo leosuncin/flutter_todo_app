@@ -36,8 +36,29 @@ class _LoginScreenState extends State<LoginScreen> {
           Text('Logging...'),
         ],
       )));
-      await context.read<Auth>().login(email, password);
-      _scaffold.currentState.hideCurrentSnackBar();
+
+      try {
+        await context.read<Auth>().login(email, password);
+      } on LoginException catch (e) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Authentication error'),
+            content: Text(e.toString()),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('CLOSE'),
+              ),
+            ],
+          ),
+        );
+      } finally {
+        _scaffold.currentState.hideCurrentSnackBar();
+      }
+
       setState(() {
         _isLoading = false;
       });
