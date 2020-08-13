@@ -24,7 +24,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: LoginScreen.routeName,
+      home: Consumer<Auth>(
+        builder: (context, auth, child) =>
+            auth.isAuthenticated ? HomeScreen() : LoginScreen(),
+      ),
       routes: {
         LoginScreen.routeName: (_) => LoginScreen(),
         RegisterScreen.routeName: (_) => RegisterScreen(),

@@ -6,7 +6,7 @@ import 'package:flutter_todo_app/screens/login_screen.dart';
 enum MenuActionOptions { Logout }
 
 class HomeScreen extends StatelessWidget {
-  static const routeName = '/';
+  static const routeName = '/home';
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'Welcome',
-          style: Theme.of(context).textTheme.headline1,
+          style: Theme.of(context).textTheme.headline2,
         ),
       ),
     );
