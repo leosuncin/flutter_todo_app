@@ -81,84 +81,80 @@ class _LoginScreenState extends State<LoginScreen> {
       key: _scaffold,
       body: Center(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: mq.orientation == Orientation.portrait
+          child: Card(
+            margin: mq.orientation == Orientation.portrait
                 ? EdgeInsets.all(mq.size.width / 6)
-                : EdgeInsets.symmetric(horizontal: mq.size.width / 3),
-            child: Container(
-              height: 320,
-              child: Card(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Form(
-                    key: _form,
-                    autovalidate: true,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                          ),
-                          autofocus: true,
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
-                          onFieldSubmitted: (_) {
-                            FocusScope.of(context)
-                                .requestFocus(_passwordFocusNode);
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty)
-                              return 'Email should not be empty';
+                : EdgeInsets.symmetric(horizontal: mq.size.width / 4),
+            child: Form(
+              key: _form,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 20,
+                  bottom: 20,
+                  left: 20,
+                ),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                      ),
+                      autofocus: true,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_passwordFocusNode);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty)
+                          return 'Email should not be empty';
 
-                            return null;
-                          },
-                          onSaved: (value) {
-                            setState(() {
-                              email = value;
-                            });
-                          },
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                          ),
-                          obscureText: true,
-                          textInputAction: TextInputAction.done,
-                          focusNode: _passwordFocusNode,
-                          onFieldSubmitted: (_) => _submit(),
-                          validator: (value) {
-                            if (value == null || value.isEmpty)
-                              return 'Password should not be empty';
-
-                            if (value.length < 8)
-                              return 'Password too short (at least 8 characters required)';
-
-                            return null;
-                          },
-                          onSaved: (value) {
-                            setState(() {
-                              password = value;
-                            });
-                          },
-                        ),
-                        SizedBox.fromSize(
-                          size: Size(double.infinity, 30),
-                        ),
-                        PrimaryButton(
-                          text: 'Sign in',
-                          onPressed: _submit,
-                        ),
-                        SecondaryButton(
-                          text: 'Sign up',
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(RegisterScreen.routeName);
-                          },
-                        ),
-                      ],
+                        return null;
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
                     ),
-                  ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                      ),
+                      obscureText: true,
+                      textInputAction: TextInputAction.done,
+                      focusNode: _passwordFocusNode,
+                      onFieldSubmitted: (_) => _submit(),
+                      validator: (value) {
+                        if (value == null || value.isEmpty)
+                          return 'Password should not be empty';
+
+                        if (value.length < 8)
+                          return 'Password too short (at least 8 characters required)';
+
+                        return null;
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
+                    ),
+                    SizedBox.fromSize(
+                      size: Size(double.infinity, 30),
+                    ),
+                    PrimaryButton(
+                      text: 'Sign in',
+                      onPressed: _submit,
+                    ),
+                    SecondaryButton(
+                      text: 'Sign up',
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(RegisterScreen.routeName);
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
