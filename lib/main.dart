@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/providers/todo_list.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo_app/providers/auth.dart';
 import 'package:flutter_todo_app/screens/home_screen.dart';
@@ -9,6 +10,10 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => Auth()),
+      ProxyProvider<Auth, TodoList>(
+        update: (context, auth, previous) => previous..token = auth.token,
+        create: (context) => TodoList(context.read<Auth>().token),
+      ),
     ],
     child: MyApp(),
   ));

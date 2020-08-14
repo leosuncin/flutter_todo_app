@@ -109,6 +109,7 @@ class Auth with ChangeNotifier, DiagnosticableTreeMixin {
   bool get isAuthenticated => _token != null && _token.isNotEmpty;
   User get user => _user;
   DateTime get loggedAt => _loggedAt;
+  String get token => _token;
 
   Future<void> login(String email, String password) async {
     final payload = json.encode({
