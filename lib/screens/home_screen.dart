@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_todo_app/components/todo/list_tasks.dart';
 import 'package:flutter_todo_app/providers/auth.dart';
 import 'package:flutter_todo_app/screens/login_screen.dart';
 
@@ -14,7 +15,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('List of task'),
         actions: [
           PopupMenuButton(
             itemBuilder: (_) => [
@@ -36,12 +37,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Text(
-          'Welcome',
-          style: Theme.of(context).textTheme.headline2,
-        ),
-      ),
+      body: ListTasks(),
     );
   }
 }
